@@ -13,4 +13,83 @@ class CustomJSONEncoder(JSONEncoder):
         return JSONEncoder.default(self, obj)
 
 
+def create_endpoints(app, services):
+    westa_service = services.westa_service
 
+
+    @app.route('/timeline', methods=['GET'])
+    def user_registration():
+        try:
+            timeline = westa_servcie.westa_dao.get_timeline()
+            return jsonify(timeline), 200
+        except:
+            return '', 400
+
+    @app.route('/post', methods=['POST'])
+    def new_post():
+        credential = request.json()
+        try: 
+            post_list = westa_service.new_post(credential)
+            return jsonify(post_list), 200
+        except:
+            return '', 400
+
+    @app.route('/post/<int:post_id>', methods=['GET'])
+    def get_post(post_id):
+        try:
+            post_data = westa_service.get_post(post_id)
+            return jsonify(post_data), 200
+        except:
+            return '', 400
+
+    @app.route('/post/delete', methods=['POST'])
+    def delete_post():
+        credential = request.json()
+        try:
+            westa_service.westa_dao.delete_post(credential['post_id'])
+            return '', 200
+        except:
+            return '', 400
+
+    @app.route('/reviews/<int:post_id>', methods=['GET'])
+    def get_reviews(post_id):
+        try:
+            review_list = westa_service.westa_dao.get_reviews(post_id)
+            return jsonify(review_list), 200
+        except:
+            return '', 400
+
+    @app.route('/reviews', methods=['POST'])
+    def new_review():
+        credential = request.json()
+        try:
+            review_list = westa_service.westa_dao.new_review(credential)
+            return jsonify(review_list), 200
+        except:
+            return '', 400
+
+    @app.route('/review/delete', methods=['POST'])
+    def delete_review():
+        credential = request.json()
+        try:
+            westa_service.delete_review(credential)
+            return '', 200
+        except:
+            return '', 400
+
+
+    @app.route('/like', methods=['POST'])
+    def add_like():
+        credential = request.json()
+        try:
+            total_like = westa_service.westa_dao.add_like(credential['post_id'])
+            return jsonify(total_like), 200
+        except:
+            return '', 400
+
+
+
+
+            
+
+       

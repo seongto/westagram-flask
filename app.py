@@ -8,7 +8,12 @@ from model import WestaDao
 from service import WestaService
 from view import create_endpoints
 
-def create_app(test_config - None):
+
+class Services:
+    pass
+
+
+def create_app(test_config = None):
     app = Flask(__name__)
 
     CORS(app)
@@ -18,14 +23,17 @@ def create_app(test_config - None):
     else:
         app.config.update(test_config)
 
-    database = create_engine(app.config['DB_URL'], encoding = 'utf-8', max_overflow = 0)
+    database = create_engine(app.config["DB_URL"], encoding="utf-8", max_overflow=0)
+    app.database = database
     
-    ## WestaDao Layer
+    ## Persistence Layer
     westa_dao = WestaDao(database)
 
-    service = WestaService
-    service.westa_service = WestaService(westa_dao, app.config)
+    ## Business Layer
 
-    create_endpoints(app, service)
+    services = Services
+    services.westa_service = WestaService(westa_dao, app.config)
+
+    create_endpoints(app, services)
 
     return app 
