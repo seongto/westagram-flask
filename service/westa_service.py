@@ -8,9 +8,12 @@ class WestaService:
         
 
     def new_post(self, new_post):
-        self.westa_dao.insert_post(new_post)
-        post_list = self.westa_dao.get_timeline()
-        return post_list
+        row = self.westa_dao.insert_post(new_post)
+        if row != None:
+            post_list = self.westa_dao.get_timeline()
+            return post_list  
+        else:
+            return None
 
 
     def get_post(self, post_id):

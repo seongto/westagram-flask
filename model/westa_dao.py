@@ -1,21 +1,26 @@
-from sqlalchemy     import text
+from sqlalchemy     import text, exc
+from errors         import InvalidRequestError
 
 class WestaDao :
     def __init__(self, database):
         self.db = database
 
     def insert_post(self, new_post):
-        return self.db.execute(text('''
-            INSERT INTO posts (
-                author,
-                post_text,
-                img
-            ) VALUES (
-                :author,
-                :text,
-                :img
-            )
-        '''), new_post).lastrowid
+        try:
+            return self.db.execute(text('''
+                INSERT INTO posts (
+                    author,
+                    post_text,
+                    img
+                ) VALUES (
+                    :author,
+                    :text,
+                    :img
+                )
+            '''), new_post).lastrowid
+
+        except(exc.StatementError):
+            return None
 
     def get_timeline(self):
         rows = self.db.execute(text('''
@@ -87,17 +92,21 @@ class WestaDao :
 
 
     def insert_review(self, new_review):
-        return self.db.execute(text('''
-            INSERT INTO reviews (
-                author,
-                review_text,
-                post_id
-            ) VALUES (
-                :author,
-                :text,
-                :post_id
-            )
-        '''), new_review).lastrowid
+        try:
+            return self.db.execute(text('''
+                INSERT INTO reviews (
+                    author,
+                    review_text,
+                    post_id
+                ) VALUES (
+                    :author,
+                    :text,
+                    :post_id
+                )
+            '''), new_review).lastrowid
+
+        except(exc.StatementError):
+            return None
 
 
     def delete_review(self, review_id):

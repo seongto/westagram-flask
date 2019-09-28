@@ -2,6 +2,7 @@ import re
 
 from flask      import request, jsonify, current_app, Response, g
 from flask.json import JSONEncoder
+from errors     import InvalidRequestError
 
 
 ## set를 list로 변환하여 JSON으로 변환 가능하게 해주는 커스텀 encoder
@@ -27,12 +28,17 @@ def create_endpoints(app, services):
 
     @app.route('/post', methods=['POST'])
     def new_post():
-        credential = request.json()
-        try: 
+        try:
+            credential = request.json
             post_list = westa_service.new_post(credential)
+            if post_list == None:
+                raise InvalidRequestError
             return jsonify(post_list), 200
-        except:
+
+        except(InvalidRequestError):
             return '', 400
+            print('what the fuck')
+       
 
     @app.route('/post/<int:post_id>', methods=['GET'])
     def get_post(post_id):

@@ -77,9 +77,17 @@ def test_new_post(westa_service):
         'text': '테스트 입력합니다.'
     }
 
+    bad_data = {
+        'img': 'badbad',
+        'author': 'errorman',
+        'test': 'error 입력합니다.'
+    }
+
     new_post_list = westa_service.new_post(new_post)
     assert new_post_list[0]['img'] == new_post['img']
-    
+
+    errrr = westa_service.new_post(bad_data)
+    assert errrr == None 
 
 def test_get_post(westa_service):
     post = westa_service.get_post(1)

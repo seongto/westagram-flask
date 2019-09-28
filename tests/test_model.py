@@ -4,6 +4,8 @@ import config
 from model      import WestaDao
 from sqlalchemy import create_engine, text
 from .          import data_setup
+from errors     import InvalidRequestError
+
 
 database = create_engine(config.test_config['DB_URL'], encoding = 'utf-8', max_overflow=0)
 
@@ -86,6 +88,14 @@ def test_insert_post(westa_dao):
     assert post_data['author'] == new_post['author']
     assert post_data['text'] == new_post['text']
 
+    error_post = { 'img': 'asdfad' }
+    new_error = westa_dao.insert_post(error_post)
+    assert new_error == None 
+
+    error_post2 = { 'asdf': 123 }
+    new_error2 = westa_dao.insert_post(error_post2)
+    assert new_error2 == None
+
 
 def test_get_timeline(westa_dao):
     timeline = westa_dao.get_timeline()
@@ -150,6 +160,15 @@ def test_insert_review(westa_dao):
     review_test = get_test_review(review_id)
 
     assert review_test['text'] == new_review['text']
+
+    error_data = {
+        'author': 'errorman',
+        'text': 'error!!!',
+        'post_id': 90
+    }
+    
+    error_result = westa_dao.insert_review(error_data)
+    assert error_result == None
 
 
 def test_delete_review(westa_dao):
