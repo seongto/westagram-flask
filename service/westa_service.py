@@ -3,7 +3,7 @@ import re
 
 class WestaService:
     def __init__(self, westa_dao, config):
-        self.westa_dao = user_dao
+        self.westa_dao = westa_dao
         self.config = config
         
 
@@ -14,9 +14,12 @@ class WestaService:
 
 
     def get_post(self, post_id):
-        post_data = self.westa_dao.get_post(post_id)
-        post_data['reviews'] = self.westa_dao.get_reviews(post_id)
-        return post_data
+        try:
+            post_data = self.westa_dao.get_post(post_id)
+            post_data['reviews'] = self.westa_dao.get_reviews(post_id)
+            return post_data
+        except(TypeError):
+            return None
 
         
     def new_review(self, new_review):

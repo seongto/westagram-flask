@@ -93,13 +93,13 @@ def test_get_timeline(westa_dao):
     assert len(timeline) == 3
     assert timeline == [{
         'post_id': 3,
-        'img': 'url'
+        'img': 'url3'
     },{
         'post_id': 2,
-        'img': 'url'
+        'img': 'url2'
     },{
         'post_id': 1,
-        'img': 'url'
+        'img': 'url1'
     }]
     
 

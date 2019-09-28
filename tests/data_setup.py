@@ -6,19 +6,19 @@ from sqlalchemy import text
 def setup_test_data(database):
     new_posts = [{
         'id': 1,
-        'img': 'url',
+        'img': 'url1',
         'post_text': 'post1',
         'total_like': 1,
         'author': '테스트맨1'
     },{
         'id': 2,
-        'img': 'url',
+        'img': 'url2',
         'post_text': 'post2',
         'total_like': 2,
         'author': '테스트맨2'
     },{
         'id': 3,
-        'img': 'url',
+        'img': 'url3',
         'post_text': 'post3',
         'total_like': 3,
         'author': '테스트맨3'

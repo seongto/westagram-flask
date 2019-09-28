@@ -1,4 +1,4 @@
-from  westa_service import WestaService 
+from .westa_service import WestaService 
 
 __all__ = [
     'WestaService'
