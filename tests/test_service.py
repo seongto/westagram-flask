@@ -89,6 +89,7 @@ def test_new_post(westa_service):
     errrr = westa_service.new_post(bad_data)
     assert errrr == None 
 
+
 def test_get_post(westa_service):
     post = westa_service.get_post(1)
     post_test = get_test_post(1)
@@ -99,4 +100,43 @@ def test_get_post(westa_service):
     post_none = westa_service.get_post(10)
 
     assert post_none == None
+    
+
+def test_new_review(westa_service):
+    new_review = {
+        'author': 'testman',
+        'text': 'insert review',
+        'post_id': 2
+    }
+
+    new_review_list = westa_service.new_review(new_review)
+    assert new_review_list[0]['text'] == new_review['text'] 
+
+    error_data = {
+        'author': 'errorman',
+        'text': 'error!!!',
+        'post_id': 90
+    }
+
+    errors = westa_service.new_review(error_data)
+    assert errors == None
+
+
+def test_delete_review(westa_service):
+    post_id = 2
+    new_review = {
+        'author': 'testman',
+        'text': 'insert review',
+        'post_id': post_id
+    }
+
+    review_id = westa_service.westa_dao.insert_review(new_review)
+    review_test = get_test_review(review_id)
+    assert new_review['text'] == review_test['text']
+
+    reviews = westa_service.delete_review( post_id, review_id)
+    assert len(reviews) == 1
+    assert reviews[0]['review_id'] == 3
+    
+
     

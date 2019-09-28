@@ -49,10 +49,12 @@ def create_endpoints(app, services):
             return '', 400
 
     @app.route('/post/delete', methods=['POST'])
-    def delete_post():
-        credential = request.json()
+    def delete_post():  
         try:
-            westa_service.westa_dao.delete_post(credential['post_id'])
+            credential = request.json()
+            result = westa_service.westa_dao.delete_post(credential['post_id'])
+            if result != 1:
+                raise InvalidRequestError
             return '', 200
         except:
             return '', 400
@@ -78,8 +80,10 @@ def create_endpoints(app, services):
     def delete_review():
         credential = request.json()
         try:
-            westa_service.delete_review(credential)
-            return '', 200
+            review_list = westa_service.delete_review(credential['post_id'], credential['review_id'])
+            if review_list == None:
+                raise InvalidRequestError
+            return jsonify(review_list), 200
         except:
             return '', 400
 

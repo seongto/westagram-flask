@@ -8,8 +8,8 @@ class WestaService:
         
 
     def new_post(self, new_post):
-        row = self.westa_dao.insert_post(new_post)
-        if row != None:
+        result = self.westa_dao.insert_post(new_post)
+        if result != None:
             post_list = self.westa_dao.get_timeline()
             return post_list  
         else:
@@ -26,14 +26,20 @@ class WestaService:
 
         
     def new_review(self, new_review):
-        self.westa_dao.insert_review(new_review)
-        reviews = self.westa_dao.get_reviews(new_review['post_id'])
-        return reviews
+        result = self.westa_dao.insert_review(new_review)
+        if result != None:
+            reviews = self.westa_dao.get_reviews(new_review['post_id'])
+            return reviews
+        else:
+            return None
 
 
-    def delete_review(self, credential):
-        self.westa_dao.delete_review(credential['review_id'])
-        reviews = self.westa_dao.get_reviews(credential['post_id'])
-        return reviews
+    def delete_review(self, post_id, review_id):
+        result = self.westa_dao.delete_review(review_id)
+        if result == 1:
+            reviews = self.westa_dao.get_reviews(post_id)
+            return reviews
+        else :
+            return None
 
 
