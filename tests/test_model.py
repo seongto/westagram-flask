@@ -170,4 +170,10 @@ def test_delete_review(westa_dao):
     count2 = westa_dao.delete_review(10)
     assert count2 == 0
 
-  
+
+def test_add_like(westa_dao):
+    like_before = get_test_post(3)['like']
+    like_after = westa_dao.add_like(3)['like']
+
+    assert like_after == 4
+    assert like_before == like_after - 1
