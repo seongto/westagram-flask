@@ -110,6 +110,7 @@ def test_new_review(westa_service):
     }
 
     new_review_list = westa_service.new_review(new_review)
+    print('>>>>>>>>>>>', new_review_list)
     assert new_review_list[0]['text'] == new_review['text'] 
 
     error_data = {

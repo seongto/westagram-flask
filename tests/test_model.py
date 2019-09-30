@@ -123,22 +123,11 @@ def test_get_post(westa_dao):
 
 
 def test_delete_post(westa_dao):
-    new_post = {
-        'img': 'url2',
-        'author': 'testman',
-        'text': 'delete test'
-    }
+    count = westa_dao.delete_post(2)
 
-    post_id = westa_dao.insert_post(new_post)
-    post_check = get_test_post(post_id)
-    assert new_post['text'] == post_check['text']
-
-    count1 = westa_dao.delete_post(post_id)
-    assert count1 == 1
-    assert get_test_post(post_id) == None
-
-    count2 = westa_dao.delete_post(10)
-    assert count2 == 0
+    assert count == 2
+    assert get_test_post(2) == None
+    assert get_test_review(3) == None
 
 
 def test_get_reviews(westa_dao):
@@ -172,21 +161,22 @@ def test_insert_review(westa_dao):
 
 
 def test_delete_review(westa_dao):
+    post_id = 2
     new_review = {
         'author': 'testman',
         'text': 'insert review',
-        'post_id': 2
+        'post_id': post_id
     }
 
     review_id = westa_dao.insert_review(new_review)
     review_test = get_test_review(review_id)
     assert new_review['text'] == review_test['text']
 
-    count1 = westa_dao.delete_review(review_id)
+    count1 = westa_dao.delete_review(post_id, review_id)
     assert count1 == 1
     assert get_test_review(review_id) == None
 
-    count2 = westa_dao.delete_review(10)
+    count2 = westa_dao.delete_review(1, 10)
     assert count2 == 0
 
 

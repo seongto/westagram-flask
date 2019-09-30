@@ -19,9 +19,9 @@ def create_endpoints(app, services):
 
 
     @app.route('/timeline', methods=['GET'])
-    def user_registration():
+    def get_timeline():
         try:
-            timeline = westa_servcie.westa_dao.get_timeline()
+            timeline = westa_service.westa_dao.get_timeline()
             return jsonify(timeline), 200
         except:
             return '', 400
@@ -35,7 +35,7 @@ def create_endpoints(app, services):
                 raise InvalidRequestError
             return jsonify(post_list), 200
 
-        except(InvalidRequestError):
+        except:
             return '', 400
             print('what the fuck')
        
@@ -44,6 +44,8 @@ def create_endpoints(app, services):
     def get_post(post_id):
         try:
             post_data = westa_service.get_post(post_id)
+            if post_data == None:
+                raise InvalidRequestError
             return jsonify(post_data), 200
         except:
             return '', 400
@@ -51,7 +53,7 @@ def create_endpoints(app, services):
     @app.route('/post/delete', methods=['POST'])
     def delete_post():  
         try:
-            credential = request.json()
+            credential = request.json
             result = westa_service.westa_dao.delete_post(credential['post_id'])
             if result != 1:
                 raise InvalidRequestError
@@ -69,18 +71,19 @@ def create_endpoints(app, services):
 
     @app.route('/reviews', methods=['POST'])
     def new_review():
-        credential = request.json()
+        credential = request.json
         try:
-            review_list = westa_service.westa_dao.new_review(credential)
-            return jsonify(review_list), 200
+            reviews = westa_service.new_review(credential)
+            return jsonify(reviews), 200
         except:
             return '', 400
 
-    @app.route('/review/delete', methods=['POST'])
+    @app.route('/reviews/delete', methods=['POST'])
     def delete_review():
-        credential = request.json()
+        credential = request.json
         try:
             review_list = westa_service.delete_review(credential['post_id'], credential['review_id'])
+            
             if review_list == None:
                 raise InvalidRequestError
             return jsonify(review_list), 200
@@ -90,7 +93,7 @@ def create_endpoints(app, services):
 
     @app.route('/like', methods=['POST'])
     def add_like():
-        credential = request.json()
+        credential = request.json
         try:
             total_like = westa_service.westa_dao.add_like(credential['post_id'])
             return jsonify(total_like), 200

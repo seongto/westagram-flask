@@ -27,6 +27,7 @@ class WestaService:
         
     def new_review(self, new_review):
         result = self.westa_dao.insert_review(new_review)
+
         if result != None:
             reviews = self.westa_dao.get_reviews(new_review['post_id'])
             return reviews
@@ -35,7 +36,7 @@ class WestaService:
 
 
     def delete_review(self, post_id, review_id):
-        result = self.westa_dao.delete_review(review_id)
+        result = self.westa_dao.delete_review(post_id, review_id)
         if result == 1:
             reviews = self.westa_dao.get_reviews(post_id)
             return reviews

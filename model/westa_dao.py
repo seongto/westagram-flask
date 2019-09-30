@@ -62,9 +62,13 @@ class WestaDao :
 
     def delete_post(self, post_id):
         count = self.db.execute(text('''
-            UPDATE posts
-            SET is_deleted = 1
-            WHERE id = :post_id
+            UPDATE
+                posts,
+                reviews
+            SET posts.is_deleted = 1,
+                reviews.is_deleted = 1
+            WHERE posts.id = :post_id
+            AND reviews.post_id = :post_id
         '''), {'post_id': post_id}).rowcount
 
         return count
@@ -88,7 +92,7 @@ class WestaDao :
             'author': row['author'],
             'text': row['review_text'],
             'created_at': row['created_at']
-        } for row in rows ] if rows else None
+        } for row in rows ] if rows else []
 
 
     def insert_review(self, new_review):
@@ -109,12 +113,16 @@ class WestaDao :
             return None
 
 
-    def delete_review(self, review_id):
+    def delete_review(self, post_id, review_id):
         count = self.db.execute(text('''
             UPDATE reviews
             SET is_deleted = 1
             WHERE id = :review_id
-        '''), {'review_id': review_id}).rowcount
+            AND post_id = :post_id
+        '''), {
+            'review_id': review_id,
+            'post_id': post_id
+        }).rowcount
 
         return count
 
