@@ -32,7 +32,7 @@ def create_app(test_config = None):
     ## Business Layer
 
     services = Services
-    services.westa_service = WestaService(westa_dao, app.config)
+    services.westa_service = WestaService(westa_dao)
 
     create_endpoints(app, services)
 

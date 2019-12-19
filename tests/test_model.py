@@ -186,3 +186,26 @@ def test_add_like(westa_dao):
 
     assert like_after == 4
     assert like_before == like_after - 1
+
+
+def test_test1(westa_dao):
+    database.execute(text("""
+        update posts
+        set author = :author
+        where id = :id
+    """),[{'id':1, "author":"good"},{'id':2, 'author':'good2'}])
+
+    data =database.execute(text("""
+        select author
+        from posts
+    """)).fetchall()
+
+
+    data2 =database.execute(text("""
+        select author
+        from posts
+        where id = :id
+    """),[{'id':1, "author":"good"},{'id':2, 'author':'good2'}]).fetchall()
+
+    print(data2)
+    assert data == [] 

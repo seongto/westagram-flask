@@ -2,10 +2,8 @@ import re
 
 
 class WestaService:
-    def __init__(self, westa_dao, config):
+    def __init__(self, westa_dao):
         self.westa_dao = westa_dao
-        self.config = config
-        
 
     def new_post(self, new_post):
         result = self.westa_dao.insert_post(new_post)
@@ -15,7 +13,6 @@ class WestaService:
         else:
             return None
 
-
     def get_post(self, post_id):
         try:
             post_data = self.westa_dao.get_post(post_id)
@@ -23,7 +20,6 @@ class WestaService:
             return post_data
         except(TypeError):
             return None
-
         
     def new_review(self, new_review):
         result = self.westa_dao.insert_review(new_review)
@@ -33,7 +29,6 @@ class WestaService:
             return reviews
         else:
             return None
-
 
     def delete_review(self, post_id, review_id):
         result = self.westa_dao.delete_review(post_id, review_id)
